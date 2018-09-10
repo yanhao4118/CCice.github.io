@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8" />
+  
+  <title>Github+hexo搭建个人博客教程 | yh&#39;s blog</title>
+  <meta name="author" content="John Doe" />
+
+  
+  <meta name="description" content="" />
+  
+
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+  <meta property="og:title" content="Github+hexo搭建个人博客教程" />
+  <meta property="og:site_name" content="yh&#39;s blog" />
+
+  
+  
+
+  
+    <meta property="og:image" content="" />
+  
+
+  
+  <link href="/css/images/favicon.ico" rel="icon" />
+  
+
+  <link rel="alternate" href="/atom.xml" title="yh&#39;s blog" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+
+  <!-- baidu webmaster push -->
+  <script src='//push.zhanzhang.baidu.com/push.js'></script>
+
+</head>
+
+
+<body>
+  <header id="header" class="inner"><div class="alignleft">
+  <h1><a href="/">yh&#39;s blog</a></h1>
+  <h2><a href="/"></a></h2>
+</div>
+<nav id="main-nav" class="alignright">
+  <ul>
+    
+      <li><a href="/">Home</a></li>
+    
+      <li><a href="/archives">Archives</a></li>
+    
+  </ul>
+  <div class="clearfix"></div>
+</nav>
+<div class="clearfix"></div></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2018-07-17T16:00:00.000Z"><a href="/2018/07/18/Github+Hexo搭建个人博客/">2018-07-18</a></time>
+      
+      
+  
+    <h1 class="title">Github+hexo搭建个人博客教程</h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p><img src="https://upload-images.jianshu.io/upload_images/64542-b2610724831ceb28.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/959/format/webp" alt="image"><br><a id="more"></a><br>关与如何使用Github和hexo搭建个人博客的教程<br><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1533205447169&amp;di=bb1bfaa6485d9a8db82788194be2474b&amp;imgtype=0&amp;src=http%3A%2F%2Fupload.chinaz.com%2F2015%2F1016%2F1444964380585.png" alt="image"><br><a href="https://github.com/" target="_blank" rel="noopener">Github</a><br><!-- more --><br>Github上是一个共享虚拟主机服务，用于存放使用的Git版本控制的软件代码和内容项目.Github作为现在最流行的代码仓库，一个全世界程序员聚集的地方，大家相互分享自己写的代码，相互学习。</p>
+<p>Github提供了一个Github Pages的服务，Github Pages的设计初衷是为托管在Github上的项目提供介绍的静态页面。</p>
+<h3 id="创建存储库"><a href="#创建存储库" class="headerlink" title="创建存储库"></a>创建存储库</h3><p>在github上申请一个账户，然后创建个人存储库来存放我们的博客内容。<br><img src="https://ws1.sinaimg.cn/large/006bMmGaly1ftvczcrsmej30ut0mk78n.jpg" alt="image"></p>
+<p><img src="https://ws1.sinaimg.cn/large/006bMmGaly1ftvd574ktqj30tk0j8wft.jpg" alt="image"></p>
+<h3 id="Git的安装"><a href="#Git的安装" class="headerlink" title="Git的安装"></a>Git的安装</h3><p><a href="https://link.zhihu.com/?target=https%3A//git-scm.com/download/win" target="_blank" rel="noopener">Git下载</a>下载安装自己电脑支持（64/32位）的Git来将网站同步到Github上。首先进行Github的绑定：<br>git config –global user.name ‘你注册所用的用户名’<br>git config –global user.email ‘注册所用的邮箱’  <img src="https://ws1.sinaimg.cn/large/006bMmGaly1ftvdf4an12j30gj0ah74m.jpg" alt="image"><br>第一次绑定还会出现登陆界面如图：<br><img src="https://ws1.sinaimg.cn/large/006bMmGaly1ftvdi8nlsij30bo0bot8w.jpg" alt=""></p>
+<h3 id="安装Node-js"><a href="#安装Node-js" class="headerlink" title="安装Node.js"></a>安装Node.js</h3><p>Hexo基于Node.js，Node.js下载地址：<a href="https://link.zhihu.com/?target=https%3A//nodejs.org/en/download/" target="_blank" rel="noopener">Download | Node.js</a> 下载安装包，注意安装Node.js会包含环境变量及npm的安装。<br>安装后，检测Node.js是否安装成功，在命令行中输入 ：<br>node -v<br>检测npm是否安装成功，在命令行中输入：<br>npm -v<br><img src="https://upload-images.jianshu.io/upload_images/8375017-13b2b300d683cbbd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="image"></p>
+<h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><p>exo就是我们的个人博客网站的框架， 这里需要自己在电脑常里创建一个文件夹，可以命名为Blog，Hexo框架与以后你自己发布的网页都在这个文件夹中。创建好后，进入文件夹中，按住shift键，右击鼠标点击命令行</p>
+<p>使用npm命令安装Hexo，输入：<br>npm install -g hexo-cli<br><img src="https://ws1.sinaimg.cn/large/006bMmGaly1ftvdpdndygj30gj0ahwf0.jpg" alt=""><br>这个安装时间较长耐心等待，安装完成后，初始化我们的博客，输入：</p>
+<p>hexo init blog<br>注意，这里的命令都是作用在刚刚创建的Blog文件夹中。</p>
+<p>为了检测我们的网站雏形，分别按顺序输入以下三条命令：</p>
+<p>hexo new test_my_site</p>
+<p>hexo g</p>
+<p>hexo s</p>
+<p><img src="https://ws1.sinaimg.cn/large/006bMmGaly1ftvdpt5vytj30fg0ia0tg.jpg" alt=""><br>之后你就可以看到自己所写的第一篇博客了。  </p>
+<h3 id="推送网站"><a href="#推送网站" class="headerlink" title="推送网站"></a>推送网站</h3><p>上面只是在本地预览，接下来要做的就是就是推送网站，也就是发布网站，让我们的网站可以被更多的人访问。在设置之前，需要解释一个概念，在blog根目录里的_config.yml文件称为站点配置文件，如下图<img src="https://ws1.sinaimg.cn/large/006bMmGaly1ftvdrhl5zkj30rx0o9tbb.jpg" alt=""><br>我们需要在博客根目录下的配置文件中修改高亮部分：<br>deploy:</p>
+<p>type: git</p>
+<p>repo: 这里填入你之前在GitHub上创建仓库的完整路径，记得加上 .git</p>
+<p>branch: master  </p>
+<p>之后保存站点配置文件。</p>
+<p>其实就是给hexo d 这个命令做相应的配置，让hexo知道你要把blog部署在哪个位置，很显然，我们部署在我们GitHub的仓库里。最后安装Git部署插件，输入命令：</p>
+<p>npm install hexo-deployer-git –save<br><img src="https://ws1.sinaimg.cn/large/006bMmGaly1ftvdv4ugrmj31gu04hmxl.jpg" alt=""><br>这时，我们分别输入三条命令：</p>
+<p>hexo clean<br>hexo g<br>hexo d<br>也可以简写成</p>
+<p>hexo clean &amp;&amp; hexo g &amp;&amp; hexo d<br><img src="https://ws1.sinaimg.cn/large/006bMmGaly1ftvdu79w75j30gj0ahweq.jpg" alt=""><br>你就会发现你的博客已经上线了，可以在网络上被访问了。</p>
+<p>这里注意一下，第一次部署会要求你输入GitHub的用户名和密码，只需要按着要求做就行了。  </p>
+<h3 id="更换主题"><a href="#更换主题" class="headerlink" title="更换主题"></a>更换主题</h3><p>在完成了博客的初步搭建后，大家一定和我一下想更换博客的主题来让博客更加的酷炫。<br><a href="https://hexo.io/themes/" target="_blank" rel="noopener">hexo主题商城</a>中有大量的主题可供大家选择<br><img src="https://ws1.sinaimg.cn/large/006bMmGaly1ftvdzo2kaej31hc0p7amq.jpg" alt="">在选择好自己喜欢的主题后将其下载的压缩包解压放入D:\博客根目录\themes内<br><img src="https://ws1.sinaimg.cn/large/006bMmGaly1ftve0yr2n9j30dr06emxa.jpg" alt=""><br>同时在根目录的网站配置文件中修改如图所示内容来应用主题<br><img src="https://ws1.sinaimg.cn/large/006bMmGaly1ftve1nnbdwj30a202fweb.jpg" alt=""><br>注意将箭头表示的名称改为你要使用的主题名称，然后进行更新便可以应用到博客里了。  </p>
+<h3 id="发布文章"><a href="#发布文章" class="headerlink" title="发布文章"></a>发布文章</h3><p>在博客中发布的文章统一使用markdown文件，这里推荐使用有道云笔记：<br><img src="https://ws1.sinaimg.cn/large/006bMmGaly1ftve4hlgjlj31hc0t3do4.jpg" alt=""><br>可以方便快捷的编辑.md文件。<br>在将要发表的文章编辑好之后，将.md文件放入D:\博客根目录\source\ _posts内，然后进行更新就可将文章同步至博客了。</p>
+
+      
+    </div>
+    
+    <footer>
+        <div class="alignright">
+          
+          <a href='javascript:void(0)' class="share-link bdsharebuttonbox" data-cmd="more">分享</a>
+        </div>
+        
+        
+        <!-- partial('post/share') -->
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:yoursite.com">
+  </form>
+</div>
+
+  
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2018/08/28/CVE-2017-8464/">CVE-2017-8464远程命令执行漏洞（震网漏洞）复现</a>
+      </li>
+    
+      <li>
+        <a href="/2018/08/18/CVE-2017-11882漏洞复现/">office word CVE-2017-11882漏洞复现</a>
+      </li>
+    
+      <li>
+        <a href="/2018/08/08/2017-6089/">CVE-2017-6089 SQL注入漏洞复现</a>
+      </li>
+    
+      <li>
+        <a href="/2018/07/30/2017-8570/">Office CVE-2017-8570 远程代码执行漏洞复现</a>
+      </li>
+    
+      <li>
+        <a href="/2018/07/24/图片隐写术/">国家网络安全周宣传周“巅峰极客”CTF misc---图片隐写术的简单示范</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+
+  
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  <p>
+  
+  &copy; 2018 John Doe
+  
+  All rights reserved.</p>
+  <p>Powered by <a href="http://hexo.io/" target="_blank">Hexo</a></p>
+</div>
+<div class="clearfix"></div>
+
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"1","bdMiniList":false,"bdPic":"","bdStyle":"2","bdSize":"16"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script></footer>
+  <script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+  $('.fancybox').fancybox();
+})(jQuery);
+</script>
+
+
+<div id='bg'></div>
+</body>
+</html>
